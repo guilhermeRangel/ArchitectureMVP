@@ -9,9 +9,17 @@
 import UIKit
 
 class MovieListTableViewController: UITableViewController {
+    
+    let apiConnect = APIConnect()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        apiConnect.getPopularMovies()
+        if apiConnect.isLoaded{
+            var movies = apiConnect.getMovieList()
+            print(movies.moviesInList.count)
+        }
+        
 
     }
 
