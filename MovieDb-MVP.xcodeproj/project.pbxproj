@@ -22,6 +22,7 @@
 		AC0AE00123048D7400460C18 /* MovieListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0AE00023048D7400460C18 /* MovieListTableViewController.swift */; };
 		AC0AE00423048DA200460C18 /* MovieDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0AE00323048DA200460C18 /* MovieDetailTableViewController.swift */; };
 		AC0AE00623048DAC00460C18 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0AE00523048DAC00460C18 /* SearchTableViewController.swift */; };
+		AC70EA94230B0B5B00A7BDBF /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC70EA93230B0B5B00A7BDBF /* MovieCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		AC0AE00023048D7400460C18 /* MovieListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListTableViewController.swift; sourceTree = "<group>"; };
 		AC0AE00323048DA200460C18 /* MovieDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailTableViewController.swift; sourceTree = "<group>"; };
 		AC0AE00523048DAC00460C18 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		AC70EA93230B0B5B00A7BDBF /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 				AC0AE00223048D7F00460C18 /* MovieList */,
 				AC0AE00823048DC700460C18 /* MovieDetail */,
 				AC0AE00723048DB200460C18 /* Search */,
+				AC70EA93230B0B5B00A7BDBF /* MovieCollectionViewCell.swift */,
 				70716FF52305E22000535A32 /* InterfaceView.swift */,
 			);
 			path = View;
@@ -222,6 +225,8 @@
 				70716FF12305D87800535A32 /* Movies.swift in Sources */,
 				70830C44230B24B00090AA6A /* MoviesService.swift in Sources */,
 				AC0AE00623048DAC00460C18 /* SearchTableViewController.swift in Sources */,
+				AC70EA94230B0B5B00A7BDBF /* MovieCollectionViewCell.swift in Sources */,
+				7088A34123048468007AD5D2 /* ViewController.swift in Sources */,
 				7088A34123048468007AD5D2 /* MoviePresenter.swift in Sources */,
 				70830C46230B259D0090AA6A /* MovieList.swift in Sources */,
 				7088A33F23048468007AD5D2 /* AppDelegate.swift in Sources */,
