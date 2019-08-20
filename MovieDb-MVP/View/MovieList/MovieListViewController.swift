@@ -9,9 +9,8 @@
 import UIKit
 
 class MovieListViewController: UIViewController {
-    
+    var movieListPresenter = MoviePresenter()
     var movie: MovieModel?
-    
     var movies: [MovieModel]?
     
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
@@ -34,6 +33,10 @@ class MovieListViewController: UIViewController {
         
         movie = MovieModel(movieName: "Jumanji", moviePoster: "jumanji", movieRating: "5.0")
         movies = [movie, movie, movie] as? [MovieModel]
+        
+        movieListPresenter.popularMovies()
+        movieListPresenter.moviesListDetails()
+        movieListPresenter.moviesListDetails_ID(id: 429203)
         // Do any additional setup after loading the view.
     }
     
