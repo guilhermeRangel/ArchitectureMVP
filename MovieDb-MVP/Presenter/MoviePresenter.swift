@@ -10,21 +10,29 @@ import Foundation
 
 class MoviePresenter {
 
-    //lista vizia
+   
     var movieList = MovieList.init(movies: [])
-    var movieListDetails : MovieDetail?
+    var movieListDetails : headerDetails?
     var movies = MoviesService()
+    var movieListDetails_ID : MovieDetail_ID?
     
     
     func popularMovies(){
-        
         movieList = movies.getPopularMovies() // roda as requisicao da api
-        print(movieList.moviesInList.count)
+    
     }
     
     func moviesListDetails(){
          self.movieListDetails = movies.getMovieDetails()
-        print(movieListDetails.debugDescription)
+       
+        
+    }
+    
+    func moviesListDetails_ID(id : Int){
+        let idMovie = id
+        self.movieListDetails_ID = movies.getMovieDetails_ID(id: idMovie)
+        
+        
     }
     
     

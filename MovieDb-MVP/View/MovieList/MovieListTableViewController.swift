@@ -16,9 +16,12 @@ struct MovieModel {
 
 class MovieListTableViewController: UITableViewController {
     
+    var movieListPresenter = MoviePresenter()
     var movie: MovieModel?
-    
     var movies: [MovieModel]?
+    
+    
+    
     
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -36,7 +39,14 @@ class MovieListTableViewController: UITableViewController {
         movie = MovieModel(movieName: "Jumanji", moviePoster: "jumanji", movieRating: "5.0")
         movies = [movie, movie, movie] as? [MovieModel]
         
-
+        movieListPresenter.popularMovies()
+        movieListPresenter.moviesListDetails()
+        movieListPresenter.moviesListDetails_ID(id: 429203) //id de quando o cara clica no filme
+        
+       //print(movieListPresenter.movieList.moviesInList.first?.vote_average)
+        
+        print(movieListPresenter.movieListDetails_ID?.original_title)
+        
     }
     
 
@@ -54,6 +64,8 @@ class MovieListTableViewController: UITableViewController {
         case 1:
             return 1
         case 2:
+
+           // return movieListPresenter.movieList.moviesInList.count
             return 1
         default:
             return 1
@@ -61,15 +73,23 @@ class MovieListTableViewController: UITableViewController {
     
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PopularMoviesCell", for: indexPath) as? PopularMoviesTableViewCell else {
-            fatalError()
-        }
-        cell.setupCell(movieTitle: presenter.popularMovieList[indexPath.row].name, moviePosterURL: <#T##String#>, movieRating: <#T##String#>, movieDescription: <#T##String#>)
-        return cell
-    }
-    */
+    
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//        if indexPath.section == 2 {
+//
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PopularMoviesCell", for: indexPath) as? PopularMoviesTableViewCell else {
+//                print(indexPath.section)
+//                fatalError()
+//            }
+//
+//            cell.setupCell(movieTitle: movieListPresenter.movieList.moviesInList[indexPath.row].title!, moviePosterURL: movieListPresenter.movieList.moviesInList[indexPath.row].poster_path!, movieRating: String(movieListPresenter.movieList.moviesInList[indexPath.row].vote_average!), movieDescription: movieListPresenter.movieList.moviesInList[indexPath.row].overview!)
+//           return cell
+//        }
+//        return UITableViewCell()
+//
+//    }
+//
     
 
 
