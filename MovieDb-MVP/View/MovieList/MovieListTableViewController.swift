@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Movie {
+struct MovieModel {
     var movieName: String
     var moviePoster: String
     var movieRating: String
@@ -16,9 +16,9 @@ struct Movie {
 
 class MovieListTableViewController: UITableViewController {
     
-    var movie: Movie?
+    var movie: MovieModel?
     
-    var movies: [Movie]?
+    var movies: [MovieModel]?
     
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -33,8 +33,8 @@ class MovieListTableViewController: UITableViewController {
         nowPlayingCollectionView.delegate = self
         nowPlayingCollectionView.dataSource = self
         
-        movie = Movie(movieName: "Jumanji", moviePoster: "jumanji", movieRating: "5.0")
-        movies = [movie, movie, movie] as? [Movie]
+        movie = MovieModel(movieName: "Jumanji", moviePoster: "jumanji", movieRating: "5.0")
+        movies = [movie, movie, movie] as? [MovieModel]
         
 
     }
@@ -61,14 +61,15 @@ class MovieListTableViewController: UITableViewController {
     
     }
 
-    
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PopularMoviesCell", for: indexPath) as? PopularMoviesTableViewCell else {
             fatalError()
         }
-        //cell.setupCell(movieTitle: presenter.popularMovieList[indexPath.row].name, moviePosterURL: <#T##String#>, movieRating: <#T##String#>, movieDescription: <#T##String#>)
+        cell.setupCell(movieTitle: presenter.popularMovieList[indexPath.row].name, moviePosterURL: <#T##String#>, movieRating: <#T##String#>, movieDescription: <#T##String#>)
         return cell
     }
+    */
     
 
 
