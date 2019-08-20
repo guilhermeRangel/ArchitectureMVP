@@ -35,7 +35,9 @@ struct MovieDetail: Codable {
     let video: Bool?
     let vote_average: Double?
     let vote_count: Int?
+    
 }
+
 
 struct Spoken_languages : Codable {
     let iso_639_1: String?

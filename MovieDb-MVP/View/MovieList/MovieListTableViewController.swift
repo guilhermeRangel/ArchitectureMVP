@@ -10,8 +10,20 @@ import UIKit
 
 class MovieListTableViewController: UITableViewController {
 
+    
+    var moviesPresenter = MoviePresenter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+        moviesPresenter.popularMovies()
+        
+        print(moviesPresenter.movieList.moviesInList.count)
+        
+     
+       
+        
+        
 
     }
 
