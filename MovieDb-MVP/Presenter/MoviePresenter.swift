@@ -15,18 +15,16 @@ class MoviePresenter {
     var movieListDetails : MovieDetail?
     var movies = MoviesService()
     
-  
- 
-    
     
     func popularMovies(){
-        movieList =  movies.getPopularMovies() // roda as requisicao da api
-       
+        
+        movieList = movies.getPopularMovies() // roda as requisicao da api
+        print(movieList.moviesInList.count)
     }
-    
     
     func moviesListDetails(){
          self.movieListDetails = movies.getMovieDetails()
+        print(movieListDetails.debugDescription)
     }
     
     
