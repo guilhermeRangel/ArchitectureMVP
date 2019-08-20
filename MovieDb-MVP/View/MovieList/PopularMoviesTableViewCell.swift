@@ -18,6 +18,7 @@ class PopularMoviesTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
     
     func setupCell(movieTitle: String, moviePosterURL: String, movieRating: String, movieDescription: String){

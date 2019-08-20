@@ -24,6 +24,8 @@
 		AC0AE00423048DA200460C18 /* MovieDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0AE00323048DA200460C18 /* MovieDetailTableViewController.swift */; };
 		AC0AE00623048DAC00460C18 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0AE00523048DAC00460C18 /* SearchTableViewController.swift */; };
 		AC70EA94230B0B5B00A7BDBF /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC70EA93230B0B5B00A7BDBF /* MovieCollectionViewCell.swift */; };
+		AC760A48230C78D600490BF5 /* PopularMoviesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC760A47230C78D600490BF5 /* PopularMoviesDelegate.swift */; };
+		AC760A4A230C7FDD00490BF5 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC760A49230C7FDD00490BF5 /* MovieListViewController.swift */; };
 		ACADAB00230C617800A8D595 /* PopularMoviesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACADAAFF230C617800A8D595 /* PopularMoviesTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,8 @@
 		AC0AE00323048DA200460C18 /* MovieDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailTableViewController.swift; sourceTree = "<group>"; };
 		AC0AE00523048DAC00460C18 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		AC70EA93230B0B5B00A7BDBF /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
+		AC760A47230C78D600490BF5 /* PopularMoviesDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesDelegate.swift; sourceTree = "<group>"; };
+		AC760A49230C7FDD00490BF5 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		ACADAAFF230C617800A8D595 /* PopularMoviesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				7088A34223048468007AD5D2 /* MovieList.storyboard */,
+				AC760A49230C7FDD00490BF5 /* MovieListViewController.swift */,
+				AC760A47230C78D600490BF5 /* PopularMoviesDelegate.swift */,
 				AC0AE00023048D7400460C18 /* MovieListTableViewController.swift */,
 				ACADAAFF230C617800A8D595 /* PopularMoviesTableViewCell.swift */,
 			);
@@ -224,8 +230,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC760A48230C78D600490BF5 /* PopularMoviesDelegate.swift in Sources */,
 				AC0AE00123048D7400460C18 /* MovieListTableViewController.swift in Sources */,
 				70716FF32305D8C300535A32 /* MovieDetail.swift in Sources */,
+				AC760A4A230C7FDD00490BF5 /* MovieListViewController.swift in Sources */,
 				AC0AE00423048DA200460C18 /* MovieDetailTableViewController.swift in Sources */,
 				70716FF62305E22000535A32 /* InterfaceView.swift in Sources */,
 				70716FF12305D87800535A32 /* Movies.swift in Sources */,
