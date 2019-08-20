@@ -19,6 +19,8 @@ class MoviePresenter {
     
     func popularMovies(){
         movieList = movies.getPopularMovies() // roda as requisicao da api
+     
+        
     
     }
     

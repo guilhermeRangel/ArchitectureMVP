@@ -21,7 +21,15 @@ class MovieCollectionViewCell: UICollectionViewCell {
 
     
     func setUpCell(movieTitle: String, moviePosterURL: String, movieRating: String){
-        self.moviePosterImage.image = UIImage(named: moviePosterURL)
+        var getImage = "https://image.tmdb.org/t/p/w500\(moviePosterURL)"
+        var url = URL(string: getImage)!
+        var data = try? Data(contentsOf: url)
+        
+        
+        
+        
+        
+        self.moviePosterImage.image = UIImage(data: data!)
         self.movieTitleLabel.text = movieTitle
         self.movieRatingLabel.text = movieRating
     }

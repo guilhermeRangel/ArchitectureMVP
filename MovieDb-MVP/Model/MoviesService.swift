@@ -12,9 +12,9 @@ import Foundation
 class MoviesService {
   
     let urlMovies = URL(string:"https://api.themoviedb.org/3/movie/popular?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US&page=1")
-    let urlMoviesDetails = URL(string:"https://api.themoviedb.org/3/movie/popular?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US&page=1")
+    let urlMoviesDetails = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US&page=1")
     var idMovie = 0
-   
+   ///a4BfxRK8dBgbQqbRxPs8kmLd8LG.jpg
     //https://api.themoviedb.org/3/movie/429203?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US
     
     
@@ -61,6 +61,7 @@ class MoviesService {
                    // localMovieDetails = moviesResponse.result
                     self.localMovieDetails = moviesResponse
                     
+                    
                 }
             }
             
@@ -86,6 +87,7 @@ class MoviesService {
                     guard let moviesResponse = try? decoder.decode(MovieDetail_ID.self, from: data) else { return }
                     
                    self.localMovieDetails_ID = moviesResponse
+                    
                     
                 }
             }
