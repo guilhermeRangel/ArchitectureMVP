@@ -138,7 +138,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Popular Movies" id="2lX-bY-J3I">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="196" id="Kjy-Qs-uIS">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PopularMoviesCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PopularMoviesCell" rowHeight="196" id="Kjy-Qs-uIS" customClass="PopularMoviesTableViewCell" customModule="MovieDb_MVP" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="514" width="414" height="196"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kjy-Qs-uIS" id="Hys-ss-geV">
@@ -191,6 +191,12 @@
                                                 <constraint firstItem="jv1-59-InT" firstAttribute="top" secondItem="T4e-hL-FWj" secondAttribute="bottom" constant="2" id="s98-4p-Dpd"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="movieDescriptionLabel" destination="T4e-hL-FWj" id="szF-aD-f2T"/>
+                                            <outlet property="moviePosterImage" destination="eWW-Sg-0Iy" id="Fi0-Ui-X9m"/>
+                                            <outlet property="movieRatingLabel" destination="jv1-59-InT" id="cKr-oL-T9a"/>
+                                            <outlet property="movieTitleLabel" destination="FFK-NV-UT6" id="aZU-UV-x0U"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>

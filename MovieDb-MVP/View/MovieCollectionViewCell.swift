@@ -20,11 +20,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
     var movieRating: String = ""
 
     
-    override func awakeFromNib() {
-        
-        
-    }
-    
     func setUpCell(movieTitle: String, moviePosterURL: String, movieRating: String){
         self.moviePosterImage.image = UIImage(named: moviePosterURL)
         self.movieTitleLabel.text = movieTitle

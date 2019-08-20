@@ -61,15 +61,15 @@ class MovieListTableViewController: UITableViewController {
     
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PopularMoviesCell", for: indexPath) as? PopularMoviesTableViewCell else {
+            fatalError()
+        }
+        //cell.setupCell(movieTitle: presenter.popularMovieList[indexPath.row].name, moviePosterURL: <#T##String#>, movieRating: <#T##String#>, movieDescription: <#T##String#>)
         return cell
     }
-    */
+    
 
 
 
