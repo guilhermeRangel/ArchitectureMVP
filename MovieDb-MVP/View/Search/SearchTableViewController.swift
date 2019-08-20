@@ -9,9 +9,13 @@
 import UIKit
 
 class SearchTableViewController: UITableViewController {
+    
+    var query: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(query)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
