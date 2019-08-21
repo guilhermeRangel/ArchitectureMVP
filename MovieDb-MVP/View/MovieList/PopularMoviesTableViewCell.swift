@@ -23,9 +23,9 @@ class PopularMoviesTableViewCell: UITableViewCell {
     
     func setupCell(movieTitle: String, moviePosterURL: String, movieRating: String, movieDescription: String){
         
-        var getImage = "https://image.tmdb.org/t/p/w500\(moviePosterURL)"
-        var url = URL(string: getImage)!
-        var data = try? Data(contentsOf: url)
+        let getImage = "https://image.tmdb.org/t/p/w500\(moviePosterURL)"
+        let url = URL(string: getImage)!
+        let data = try? Data(contentsOf: url)
         
         self.movieTitleLabel.text = movieTitle
         self.moviePosterImage.image = UIImage(data: data!)

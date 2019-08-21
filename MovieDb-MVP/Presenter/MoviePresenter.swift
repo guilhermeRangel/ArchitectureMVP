@@ -17,11 +17,18 @@ class MoviePresenter {
     var movies = MoviesService()
     var movieListDetails_ID : MovieDetail_ID?
     var filteredMovies = MovieList.init(movies: [])
-    
+    var maior = 0.0
     
     func popularMovies(){
-        movieList = movies.getPopularMovies() // roda as requisicao da api
+        movieListOrderByVoteAverage = movies.getPopularMovies() // roda as requisicao da api
+        movieList.moviesInList = movieListOrderByVoteAverage.moviesInList.sorted { (a, b) -> Bool in
+            return a.vote_average! > b.vote_average!
+        }
+        
+       
     }
+    
+   
     
     func moviesListDetails(){
          self.movieListDetails = movies.getMovieDetails()

@@ -16,7 +16,6 @@ class MovieListViewController: UIViewController {
     
     @IBOutlet weak var filteredMoviesCollectionView: UICollectionView!
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
-    
     @IBOutlet weak var popularMoviesTableView: UITableView!
     var idMovie = 0
 
@@ -45,16 +44,10 @@ class MovieListViewController: UIViewController {
         self.searchController.searchBar.placeholder = "Search Movie"
         self.navigationItem.searchController = searchController
         definesPresentationContext = true
-        
-//        movie = MovieModel(movieName: "Jumanji", moviePoster: "jumanji", movieRating: "5.0")
-//        movies = [movie, movie, movie] as? [MovieModel]
-        
+
         movieListPresenter.popularMovies()
         movieListPresenter.moviesListDetails()
-       
-        // Do any additional setup after loading the view.
-        
-        
+ 
         
     }
     
@@ -64,19 +57,15 @@ class MovieListViewController: UIViewController {
     }
     
 
-    // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailTableViewController{
             destination.movieTitle = movieListPresenter.movieListDetails?.results[idMovie].title
             destination.moviePosterURL = (movieListPresenter.movieListDetails?.results[idMovie].poster_path)!
             var id = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0]
-          
             movieListPresenter.moviesListDetails_ID(id: id!)
             var strGenres = ""
             for m in movieListPresenter.movieListDetails_ID!.genres! {
                 strGenres = strGenres + m.name! + ","
-                
             }
             destination.movieCategory = strGenres
             destination.movieRating = movieListPresenter.movieListDetails?.results[idMovie].vote_average?.description
@@ -89,11 +78,7 @@ class MovieListViewController: UIViewController {
         if let destination = segue.destination as? SeeAllCollectionViewController{
             destination.movieList = self.movieListPresenter.movieList.moviesInList
         }
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    
-
 }
 
 extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
@@ -105,25 +90,24 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PopularMoviesCell", for: indexPath) as? PopularMoviesTableViewCell else {
             fatalError()
         }
-     
        
-
-        
         cell.setupCell(movieTitle: String((movieListPresenter.movieListDetails?.results[indexPath.row].title)!), moviePosterURL: String((movieListPresenter.movieListDetails?.results[indexPath.row].poster_path)!), movieRating: String((movieListPresenter.movieListDetails?.results[indexPath.row].vote_average)!), movieDescription: String((movieListPresenter.movieListDetails?.results[indexPath.row].overview)!))
-      
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         idMovie = indexPath.row
-       
         performSegue(withIdentifier: "ToDetail", sender: self)
     }
-        
-    
 }
 
 extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        idMovie = indexPath.row
+        performSegue(withIdentifier: "ToDetail", sender: movieListPresenter.movieListDetails?.results[indexPath.row])
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.nowPlayingCollectionView{
             return 5
@@ -137,7 +121,6 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
         if collectionView == self.filteredMoviesCollectionView{
             movieList = self.movieListPresenter.filteredMovies.moviesInList
         }
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as? MovieCollectionViewCell
             else {
                 fatalError()
@@ -145,18 +128,6 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
                        moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-       idMovie = indexPath.row
-        print(movieListPresenter.movieListDetails?.results[indexPath.row].title)
-            performSegue(withIdentifier: "ToDetail", sender: movieListPresenter.movieListDetails?.results[indexPath.row])
-            
-        
-        
-      
-        
     }
     
     
@@ -168,8 +139,7 @@ extension MovieListViewController: UISearchBarDelegate{
 
 extension MovieListViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
-        
-        
+
         if searchController.searchBar.text?.count ?? 0 > 3{
             movieListPresenter.searchMovie(title: searchController.searchBar.text ?? "")
             filteredMoviesCollectionView.reloadData()
