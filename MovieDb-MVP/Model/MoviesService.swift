@@ -14,15 +14,29 @@ class MoviesService {
     let urlMovies = URL(string:"https://api.themoviedb.org/3/movie/popular?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US&page=1")
     let urlMoviesDetails = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US&page=1")
     var idMovie = 0
-   ///a4BfxRK8dBgbQqbRxPs8kmLd8LG.jpg
-    //https://api.themoviedb.org/3/movie/429203?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US
-    
-    
     var localMovieList = MovieList(movies: [])
     var localMovieDetails = headerDetails(page: nil, total_results: nil, total_pages: nil, results: [])
     var localMovieDetails_ID = MovieDetail_ID()
-    
-    
+
+    func getSeeAllByPage(_ page: Int) -> MovieList {
+        let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US&page=\(page)")
+        let session = URLSession.shared
+        let task = session.dataTask(with: url!) {(data, response, error) in
+            if let _ = error {
+                return
+            } else {
+                if let data = data {
+                    let decoder = JSONDecoder()
+                    guard let moviesResponse = try? decoder.decode(Movies.self, from: data) else { return }
+                    self.localMovieList = MovieList(movies: moviesResponse.results)
+                }
+            }
+        }
+        task.resume()
+        sleep(2)
+        return self.localMovieList
+        
+    }
     
     func getPopularMovies()->MovieList{
         let session = URLSession.shared
@@ -38,15 +52,10 @@ class MoviesService {
                 }
             }
             task.resume()
-            sleep(3)
+            sleep(2)
             return self.localMovieList
        
     }
-    
-    
-    
-    
-    
     
     func getMovieDetails() -> headerDetails{
         let session = URLSession.shared
@@ -57,21 +66,13 @@ class MoviesService {
                 if let data = data {
                     let decoder = JSONDecoder()
                     guard let moviesResponse = try? decoder.decode(headerDetails.self, from: data) else { return }
-                    
-                   // localMovieDetails = moviesResponse.result
                     self.localMovieDetails = moviesResponse
-                    
-                    
                 }
             }
-            
         }
         task.resume()
-        sleep(3)
-       
-       
+        sleep(2)
         return self.localMovieDetails
-
     }
     
     func getMovieDetails_ID(id: Int) -> MovieDetail_ID{
@@ -87,16 +88,11 @@ class MoviesService {
                     guard let moviesResponse = try? decoder.decode(MovieDetail_ID.self, from: data) else { return }
                     
                    self.localMovieDetails_ID = moviesResponse
-                   // print(self.localMovieDetails_ID)
-                    
                 }
             }
-            
         }
         task.resume()
-        sleep(3)
-        
-        
+        sleep(2)
         return self.localMovieDetails_ID
         
     }

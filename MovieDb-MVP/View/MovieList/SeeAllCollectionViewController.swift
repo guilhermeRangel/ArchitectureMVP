@@ -11,7 +11,10 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 class SeeAllCollectionViewController: UICollectionViewController {
+    var didRequestWasDone: Bool = true
+    var presenter: MoviePresenter = MoviePresenter()
     var movieList: [Movie] = []
+    var lastPageLoaded: Int = 1
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
@@ -19,7 +22,8 @@ class SeeAllCollectionViewController: UICollectionViewController {
 
         // Register cell classes
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
+        presenter.popularMovies()
+       
         // Do any additional setup after loading the view.
     }
 
@@ -43,7 +47,7 @@ class SeeAllCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return movieList.count
+        return presenter.movieList.moviesInList.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -51,9 +55,24 @@ class SeeAllCollectionViewController: UICollectionViewController {
             else {
                 fatalError()
         }
-        cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
-                       moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
+        cell.setUpCell(movieTitle: String(presenter.movieList.moviesInList[indexPath.row].title!),
+                       moviePosterURL: String(presenter.movieList.moviesInList[indexPath.row].poster_path!), movieRating: String(presenter.movieList.moviesInList[indexPath.row].vote_average!))
+        
         return cell
+    }
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        print(indexPath.row)
+       // print(presenter.movieList.moviesInList.count)
+        if indexPath.row == presenter.movieList.moviesInList.count-2 && didRequestWasDone {
+            didRequestWasDone = false
+            lastPageLoaded += 1
+             presenter.seeAllMovies(lastPageLoaded)
+            didRequestWasDone = true
+//            sleep(2)
+                DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            }
+        }
     }
 
     // MARK: UICollectionViewDelegate

@@ -68,7 +68,8 @@ class MovieListViewController: UIViewController {
             if observerClickSegue == 0 {
                 destination.movieTitle = movieListPresenter.movieList.moviesInList[idMovie].title
                 destination.moviePosterURL = (movieListPresenter.movieList.moviesInList[idMovie].poster_path)!
-                var id = movieListPresenter.movieList.moviesInList[idMovie].genre_ids?[0]
+                let id = movieListPresenter.movieList.moviesInList[idMovie].genre_ids?[0]
+               
                 movieListPresenter.moviesListDetails_ID(id: id!)
                 var strGenres = ""
                 for m in movieListPresenter.movieListDetails_ID!.genres! {
@@ -81,7 +82,7 @@ class MovieListViewController: UIViewController {
             }else if observerClickSegue == 1 {
                             destination.movieTitle = movieListPresenter.movieListDetails?.results[idMovie].title
                             destination.moviePosterURL = (movieListPresenter.movieListDetails?.results[idMovie].poster_path)!
-                            var id = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0]
+                let id = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0]
                             movieListPresenter.moviesListDetails_ID(id: id!)
                             var strGenres = ""
                             for m in movieListPresenter.movieListDetails_ID!.genres! {
