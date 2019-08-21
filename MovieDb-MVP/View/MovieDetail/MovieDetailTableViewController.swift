@@ -21,21 +21,34 @@ class MovieDetailTableViewController: UITableViewController {
     var movieDescription: String?
     var movieCategory: String?
     var movieRating: String?
+    var movieId: Int?
+    var moviePresenter:MoviePresenter?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var getImage = "https://image.tmdb.org/t/p/w500\(moviePosterURL)"
-      
-        let url = URL(string: getImage)!
-        var data = try? Data(contentsOf: url)
+        moviePresenter?.getMovie(id: self.movieId!)
         
-        self.movieTitleLabel.text = self.movieTitle
+        let movie = moviePresenter?.movieListDetails_ID
+      
+        let getImage = "https://image.tmdb.org/t/p/w500\(movie?.poster_path ?? "")"
+        let url = URL(string: getImage)!
+        let data = try? Data(contentsOf: url)
+        
+        self.movieTitleLabel.text = movie?.title
         self.moviePosterImageView.image = UIImage(data: data!)
-        self.movieCategoryLabel.text = self.movieCategory
-        self.movieRatingLabel.text = self.movieRating
-        self.movieDescriptionLabel.text = self.movieDescription
+        self.movieCategoryLabel.text = setCategories()
+        self.movieRatingLabel.text = "\(movie?.vote_average ?? 0)"
+        self.movieDescriptionLabel.text = movie?.overview
 
+    }
+    
+    func setCategories()->String{
+        var strGenres = ""
+        for m in (moviePresenter?.movieListDetails_ID!.genres!)! {
+            strGenres = strGenres + m.name! + ","
+        }
+        return strGenres
     }
 
     // MARK: - Table view data source

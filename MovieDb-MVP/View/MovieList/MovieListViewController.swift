@@ -9,10 +9,13 @@
 import UIKit
 
 class MovieListViewController: UIViewController {
+    
     var movieListPresenter = MoviePresenter()
-   
     
     var searchController = UISearchController(searchResultsController:nil)
+    
+    var popularMovies: [MovieDetail]?
+    var nowPlayingMovies: MovieList?
     
     @IBOutlet weak var filteredMoviesCollectionView: UICollectionView!
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
@@ -23,16 +26,16 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.popularMovies = []
         enum Section {
             case nowPlaying, popular
         }
-        
-        //Collection view delegate
         nowPlayingCollectionView.delegate = self
         nowPlayingCollectionView.dataSource = self
         filteredMoviesCollectionView.delegate = self
         filteredMoviesCollectionView.dataSource = self
         
+        //Table view delegate
         popularMoviesTableView.delegate = self
         popularMoviesTableView.dataSource = self
         popularMoviesTableView.rowHeight = 150
@@ -49,10 +52,15 @@ class MovieListViewController: UIViewController {
         self.searchController.searchBar.placeholder = "Search Movie"
         self.navigationItem.searchController = searchController
         definesPresentationContext = true
-
-        movieListPresenter.popularMovies()
-        movieListPresenter.moviesListDetails()
- 
+        
+        //Setting up presenter
+        movieListPresenter.attachView(self)
+        movieListPresenter.getNowPlaying()
+        movieListPresenter.getPopularMovies()
+       
+        // Do any additional setup after loading the view.
+        
+        
         
     }
     
@@ -64,56 +72,33 @@ class MovieListViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailTableViewController{
-            
-            if observerClickSegue == 0 {
-                destination.movieTitle = movieListPresenter.movieList.moviesInList[idMovie].title
-                destination.moviePosterURL = (movieListPresenter.movieList.moviesInList[idMovie].poster_path)!
-                var id = movieListPresenter.movieList.moviesInList[idMovie].genre_ids?[0]
-                movieListPresenter.moviesListDetails_ID(id: id!)
-                var strGenres = ""
-                for m in movieListPresenter.movieListDetails_ID!.genres! {
-                    strGenres = strGenres + m.name! + ","
-                }
-                destination.movieCategory = strGenres
-                destination.movieRating = movieListPresenter.movieList.moviesInList[idMovie].vote_average?.description
-                destination.movieDescription = movieListPresenter.movieList.moviesInList[idMovie].overview
-
-            }else if observerClickSegue == 1 {
-                            destination.movieTitle = movieListPresenter.movieListDetails?.results[idMovie].title
-                            destination.moviePosterURL = (movieListPresenter.movieListDetails?.results[idMovie].poster_path)!
-                            var id = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0]
-                            movieListPresenter.moviesListDetails_ID(id: id!)
-                            var strGenres = ""
-                            for m in movieListPresenter.movieListDetails_ID!.genres! {
-                                strGenres = strGenres + m.name! + ","
-                            }
-                            destination.movieCategory = strGenres
-                            destination.movieRating = movieListPresenter.movieListDetails?.results[idMovie].vote_average?.description
-                            destination.movieDescription = movieListPresenter.movieListDetails?.results[idMovie].overview
-                
-            }
-            
+            var id = movieListPresenter.popularMovieList?.results[idMovie].id
+          destination.movieId = id
+            destination.moviePresenter = self.movieListPresenter
         }
         if let destination = segue.destination as? SearchTableViewController{
             destination.query = ""
         }
         if let destination = segue.destination as? SeeAllCollectionViewController{
-            destination.movieList = self.movieListPresenter.movieList.moviesInList
+            destination.movieList = self.movieListPresenter.nowPlayingMovies.moviesInList
         }
     }
 }
 
 extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (movieListPresenter.movieListDetails?.results.count)!
+        return (self.popularMovies?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PopularMoviesCell", for: indexPath) as? PopularMoviesTableViewCell else {
             fatalError()
         }
-       
-        cell.setupCell(movieTitle: String((movieListPresenter.movieListDetails?.results[indexPath.row].title)!), moviePosterURL: String((movieListPresenter.movieListDetails?.results[indexPath.row].poster_path)!), movieRating: String((movieListPresenter.movieListDetails?.results[indexPath.row].vote_average)!), movieDescription: String((movieListPresenter.movieListDetails?.results[indexPath.row].overview)!))
+
+        let movie = popularMovies![indexPath.row]
+        cell.setupCell(movieTitle: movie.title!, moviePosterURL: movie.poster_path!, movieRating: "\(movie.vote_average)", movieDescription: movie.overview!)
+//        cell.setupCell(movieTitle: String((movieListPresenter.popularMovieList?.results[indexPath.row].title)!), moviePosterURL: String((movieListPresenter.popularMovieList?.results[indexPath.row].poster_path)!), movieRating: String((movieListPresenter.popularMovieList?.results[indexPath.row].vote_average)!), movieDescription: String((movieListPresenter.popularMovieList?.results[indexPath.row].overview)!))
+      
         return cell
     }
     
@@ -141,7 +126,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var movieList = self.movieListPresenter.movieList.moviesInList
+        var movieList = self.movieListPresenter.nowPlayingMovies.moviesInList
         if collectionView == self.filteredMoviesCollectionView{
             movieList = self.movieListPresenter.filteredMovies.moviesInList
         }
@@ -153,6 +138,18 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
                        moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+       idMovie = indexPath.row
+        print(movieListPresenter.popularMovieList?.results[indexPath.row].title)
+            performSegue(withIdentifier: "ToDetail", sender: movieListPresenter.popularMovieList?.results[indexPath.row])
+            
+        
+        
+      
+        
     }
     
     
@@ -173,6 +170,18 @@ extension MovieListViewController: UISearchResultsUpdating{
             self.filteredMoviesCollectionView.isHidden = true
         }
         
+    }
+}
+
+extension MovieListViewController: MovieListView{
+    func updatePopularMovies(movies: [MovieDetail]) {
+        self.popularMovies = movies
+        self.popularMoviesTableView.reloadData()
+    }
+    
+    func updateNowPlaying(movies: MovieList) {
+        self.nowPlayingMovies = movies
+        self.nowPlayingCollectionView.reloadData()
     }
     
     

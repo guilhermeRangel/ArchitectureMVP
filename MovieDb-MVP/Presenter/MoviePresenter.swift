@@ -11,36 +11,36 @@ import Foundation
 class MoviePresenter {
 
    
-    var movieList = MovieList.init(movies: [])
+    var nowPlayingMovies = MovieList.init(movies: [])
     var movieListOrderByVoteAverage = MovieList.init(movies: [])
-    var movieListDetails : headerDetails?
+    var popularMovieList : headerDetails?
     var movies = MoviesService()
     var movieListDetails_ID : MovieDetail_ID?
     var filteredMovies = MovieList.init(movies: [])
+    
+    func attachView(_ view: MovieListView){
+        self.movieView = view
+    }
+    
+    func getNowPlaying(){
+        nowPlayingMovies = movies.getPopularMovies() // roda as requisicao da api
+        movieView?.updateNowPlaying(movies: nowPlayingMovies) // atualiza a view
+    }
+    
+    func getPopularMovies(){
+         self.popularMovieList = movies.getMovieDetails()
+        movieView?.updatePopularMovies(movies: popularMovieList!.results)
     var maior = 0.0
-    
-    func popularMovies(){
-        movieListOrderByVoteAverage = movies.getPopularMovies() // roda as requisicao da api
-        movieList.moviesInList = movieListOrderByVoteAverage.moviesInList.sorted { (a, b) -> Bool in
-            return a.vote_average! > b.vote_average!
-        }
-        
-       
+    var movieView: MovieListView?
     }
     
-   
-    
-    func moviesListDetails(){
-         self.movieListDetails = movies.getMovieDetails()
-    }
-    
-    func moviesListDetails_ID(id : Int){
+    func getMovie(id : Int){
         let idMovie = id
         self.movieListDetails_ID = movies.getMovieDetails_ID(id: idMovie)
     }
     
     func searchMovie(title search: String){
-        self.filteredMovies.moviesInList = self.movieList.moviesInList.filter(({(movie:Movie) -> Bool in
+        self.filteredMovies.moviesInList = self.nowPlayingMovies.moviesInList.filter(({(movie:Movie) -> Bool in
             return movie.title?.lowercased().contains(search.lowercased()) ?? false
         }))
         print(self.filteredMovies.moviesInList)
