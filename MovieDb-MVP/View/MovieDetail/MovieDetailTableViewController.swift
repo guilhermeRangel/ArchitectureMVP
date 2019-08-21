@@ -16,11 +16,6 @@ class MovieDetailTableViewController: UITableViewController {
     @IBOutlet weak var movieRatingLabel: UILabel!
     @IBOutlet weak var movieDescriptionLabel: UILabel!
     
-    var movieTitle: String?
-    var moviePosterURL: String = ""
-    var movieDescription: String?
-    var movieCategory: String?
-    var movieRating: String?
     var movieId: Int?
     var moviePresenter:MoviePresenter?
     
