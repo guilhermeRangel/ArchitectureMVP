@@ -12,9 +12,11 @@ class MovieListViewController: UIViewController {
     var movieListPresenter = MoviePresenter()
    
     
-    var searchController = UISearchController(searchResultsController: SearchViewController())
+    var searchController = UISearchController(searchResultsController:nil)
     
+    @IBOutlet weak var filteredMoviesCollectionView: UICollectionView!
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
+    
     @IBOutlet weak var popularMoviesTableView: UITableView!
     var idMovie = 0
 
@@ -24,6 +26,8 @@ class MovieListViewController: UIViewController {
         //Collection view delegate
         nowPlayingCollectionView.delegate = self
         nowPlayingCollectionView.dataSource = self
+        filteredMoviesCollectionView.delegate = self
+        filteredMoviesCollectionView.dataSource = self
         
         popularMoviesTableView.delegate = self
         popularMoviesTableView.dataSource = self
@@ -54,6 +58,12 @@ class MovieListViewController: UIViewController {
         
     }
     
+    
+    @IBAction func seeAllMovies(_ sender: Any) {
+        performSegue(withIdentifier: "ToAll", sender: self)
+    }
+    
+
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -75,6 +85,9 @@ class MovieListViewController: UIViewController {
         }
         if let destination = segue.destination as? SearchTableViewController{
             destination.query = ""
+        }
+        if let destination = segue.destination as? SeeAllCollectionViewController{
+            destination.movieList = self.movieListPresenter.movieList.moviesInList
         }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
@@ -112,17 +125,25 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        if collectionView == self.nowPlayingCollectionView{
+            return 5
+        } else {
+            return movieListPresenter.filteredMovies.moviesInList.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var movieList = self.movieListPresenter.movieList.moviesInList
+        if collectionView == self.filteredMoviesCollectionView{
+            movieList = self.movieListPresenter.filteredMovies.moviesInList
+        }
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as? MovieCollectionViewCell
             else {
                 fatalError()
         }
-        cell.setUpCell(movieTitle: String(movieListPresenter.movieList.moviesInList[indexPath.row].title!),
-                       moviePosterURL: String(movieListPresenter.movieList.moviesInList[indexPath.row].poster_path!), movieRating: String(movieListPresenter.movieList.moviesInList[indexPath.row].vote_average!))
+        cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
+                       moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
         return cell
     }
     
@@ -150,11 +171,11 @@ extension MovieListViewController: UISearchResultsUpdating{
         
         
         if searchController.searchBar.text?.count ?? 0 > 3{
-            let search = searchController.searchBar.text ?? ""
-            if let resultsController = searchController.searchResultsController as? SearchViewController{
-                let searchPresenter = resultsController.searchPresenter
-                searchPresenter.updateView(newQuery: search)
-            }
+            movieListPresenter.searchMovie(title: searchController.searchBar.text ?? "")
+            filteredMoviesCollectionView.reloadData()
+            self.filteredMoviesCollectionView.isHidden = false
+        } else {
+            self.filteredMoviesCollectionView.isHidden = true
         }
         
     }

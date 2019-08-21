@@ -13,11 +13,9 @@ class SearchViewController: UIViewController, SearchView {
     var movieList = MovieList.init(movies: [])
 
     var query: String?
-    var searchPresenter = SearchPresenter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.searchPresenter.attach(self)
         //self.searchResultCollectionView.delegate = self
         //self.searchResultCollectionView.dataSource = self
         print("Ok")

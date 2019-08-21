@@ -1,20 +1,18 @@
 //
-//  CollectionViewController.swift
+//  SeeAllCollectionViewController.swift
 //  MovieDb-MVP
 //
-//  Created by Alexandre Scheer Bing on 20/08/19.
+//  Created by Alexandre Scheer Bing on 21/08/19.
 //  Copyright © 2019 Guilherme Rangel. All rights reserved.
 //
 
 import UIKit
 
-private let reuseIdentifier = "MovieCell"
+private let reuseIdentifier = "Cell"
 
-class SearchCollectionViewController: UICollectionViewController, SearchView {
+class SeeAllCollectionViewController: UICollectionViewController {
     
-    var movieList = MovieList.init(movies: [])
-    
-    var query: String?
+    var movieList: [Movie] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,17 +25,6 @@ class SearchCollectionViewController: UICollectionViewController, SearchView {
 
         // Do any additional setup after loading the view.
     }
-    
-    func updateQuery(query newQuery: String){
-        self.query = newQuery
-        print(query)
-    }
-    
-    func getMovies(movieList: MovieList) {
-        self.movieList = movieList
-        print(movieList.moviesInList.count)
-    }
-    
 
     /*
     // MARK: - Navigation
@@ -53,20 +40,22 @@ class SearchCollectionViewController: UICollectionViewController, SearchView {
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return movieList.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
-    
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as? MovieCollectionViewCell
+            else {
+                fatalError()
+        }
+        cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
+                       moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
         return cell
     }
 
