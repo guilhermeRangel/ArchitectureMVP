@@ -76,7 +76,7 @@ class MoviesService {
     
     func getMovieDetails_ID(id: Int) -> MovieDetail_ID{
         idMovie = id
-        var urlMovieDetails_ID = URL(string:"https://api.themoviedb.org/3/movie/\(idMovie)?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US")
+        let urlMovieDetails_ID = URL(string:"https://api.themoviedb.org/3/movie/\(idMovie)?api_key=9519eb31d39eeca5f505f924c3401dd3&language=en-US")
         let session = URLSession.shared
         let task = session.dataTask(with: urlMovieDetails_ID!) {(data, response, error) in
             if let _ = error {

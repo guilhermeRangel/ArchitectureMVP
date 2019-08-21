@@ -17,15 +17,21 @@ class MovieDetailTableViewController: UITableViewController {
     @IBOutlet weak var movieDescriptionLabel: UILabel!
     
     var movieTitle: String?
-    var moviePosterURL: String?
+    var moviePosterURL: String = ""
     var movieDescription: String?
     var movieCategory: String?
     var movieRating: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var getImage = "https://image.tmdb.org/t/p/w500\(moviePosterURL)"
+      
+        let url = URL(string: getImage)!
+        var data = try? Data(contentsOf: url)
+        
         self.movieTitleLabel.text = self.movieTitle
-        self.moviePosterImageView.image = UIImage(named: self.moviePosterURL ?? "")
+        self.moviePosterImageView.image = UIImage(data: data!)
         self.movieCategoryLabel.text = self.movieCategory
         self.movieRatingLabel.text = self.movieRating
         self.movieDescriptionLabel.text = self.movieDescription
