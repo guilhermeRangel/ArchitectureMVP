@@ -17,6 +17,7 @@ class MoviePresenter {
     var movies = MoviesService()
     var movieListDetails_ID : MovieDetail_ID?
     var filteredMovies = MovieList.init(movies: [])
+    var movieView: MovieListView?
     
     func attachView(_ view: MovieListView){
         self.movieView = view

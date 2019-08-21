@@ -22,7 +22,7 @@ class MovieListViewController: UIViewController {
     @IBOutlet weak var popularMoviesTableView: UITableView!
     var idMovie = 0
     // 0 now, 1 popular
-    var observerClickSegue = 99
+    //var observerClickSegue = 99
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,8 +72,7 @@ class MovieListViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailTableViewController{
-            var id = movieListPresenter.popularMovieList?.results[idMovie].id
-          destination.movieId = id
+          destination.movieId = idMovie
             destination.moviePresenter = self.movieListPresenter
         }
         if let destination = segue.destination as? SearchTableViewController{
@@ -97,25 +96,16 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
 
         let movie = popularMovies![indexPath.row]
         cell.setupCell(movieTitle: movie.title!, moviePosterURL: movie.poster_path!, movieRating: "\(movie.vote_average)", movieDescription: movie.overview!)
-//        cell.setupCell(movieTitle: String((movieListPresenter.popularMovieList?.results[indexPath.row].title)!), moviePosterURL: String((movieListPresenter.popularMovieList?.results[indexPath.row].poster_path)!), movieRating: String((movieListPresenter.popularMovieList?.results[indexPath.row].vote_average)!), movieDescription: String((movieListPresenter.popularMovieList?.results[indexPath.row].overview)!))
       
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       self.observerClickSegue = 1
-        idMovie = indexPath.row
         performSegue(withIdentifier: "ToDetail", sender: self)
     }
 }
 
 extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource{
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.observerClickSegue = 0
-        idMovie = indexPath.row
-        performSegue(withIdentifier: "ToDetail", sender: self)
-    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.nowPlayingCollectionView{
@@ -134,7 +124,6 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
             else {
                 fatalError()
         }
-        idMovie = indexPath.row
         cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
                        moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
         return cell
@@ -142,13 +131,9 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-       idMovie = indexPath.row
-        print(movieListPresenter.popularMovieList?.results[indexPath.row].title)
+       idMovie = nowPlayingMovies?.moviesInList[indexPath.row].id ?? 0
+        print(nowPlayingMovies?.moviesInList[indexPath.row].title)
             performSegue(withIdentifier: "ToDetail", sender: movieListPresenter.popularMovieList?.results[indexPath.row])
-            
-        
-        
-      
         
     }
     
