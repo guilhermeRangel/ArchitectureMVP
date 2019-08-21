@@ -87,7 +87,7 @@ class MoviesService {
                     guard let moviesResponse = try? decoder.decode(MovieDetail_ID.self, from: data) else { return }
                     
                    self.localMovieDetails_ID = moviesResponse
-                    
+                   // print(self.localMovieDetails_ID)
                     
                 }
             }

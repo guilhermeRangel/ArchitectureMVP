@@ -12,6 +12,7 @@ class MoviePresenter {
 
    
     var movieList = MovieList.init(movies: [])
+    var movieListOrderByVoteAverage = MovieList.init(movies: [])
     var movieListDetails : headerDetails?
     var movies = MoviesService()
     var movieListDetails_ID : MovieDetail_ID?

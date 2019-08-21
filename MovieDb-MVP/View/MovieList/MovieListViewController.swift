@@ -33,7 +33,7 @@ class MovieListViewController: UIViewController {
         
         movieListPresenter.popularMovies()
         movieListPresenter.moviesListDetails()
-        movieListPresenter.moviesListDetails_ID(id: 429203)
+       
         // Do any additional setup after loading the view.
         
         
@@ -45,12 +45,16 @@ class MovieListViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailTableViewController{
             destination.movieTitle = movieListPresenter.movieListDetails?.results[idMovie].title
-            
             destination.moviePosterURL = (movieListPresenter.movieListDetails?.results[idMovie].poster_path)!
-        
-            //destination.movieCategory = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0].description
-            destination.movieCategory = movieListPresenter.movieListDetails_ID?.genres?.description
-            //print(movieListPresenter.movieListDetails_ID?.genres?.debugDescription)
+            var id = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0]
+          
+            movieListPresenter.moviesListDetails_ID(id: id!)
+            var strGenres = ""
+            for m in movieListPresenter.movieListDetails_ID!.genres! {
+                strGenres = strGenres + m.name! + ","
+                
+            }
+            destination.movieCategory = strGenres
             destination.movieRating = movieListPresenter.movieListDetails?.results[idMovie].vote_average?.description
             destination.movieDescription = movieListPresenter.movieListDetails?.results[idMovie].overview
 
@@ -79,12 +83,13 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
 
         
         cell.setupCell(movieTitle: String((movieListPresenter.movieListDetails?.results[indexPath.row].title)!), moviePosterURL: String((movieListPresenter.movieListDetails?.results[indexPath.row].poster_path)!), movieRating: String((movieListPresenter.movieListDetails?.results[indexPath.row].vote_average)!), movieDescription: String((movieListPresenter.movieListDetails?.results[indexPath.row].overview)!))
-        
+      
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         idMovie = indexPath.row
+       
         performSegue(withIdentifier: "ToDetail", sender: self)
     }
         
@@ -110,11 +115,13 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == popularMoviesTableView {
-            
+       idMovie = indexPath.row
+        print(movieListPresenter.movieListDetails?.results[indexPath.row].title)
             performSegue(withIdentifier: "ToDetail", sender: movieListPresenter.movieListDetails?.results[indexPath.row])
             
-        }
+        
+        
+      
         
     }
     
