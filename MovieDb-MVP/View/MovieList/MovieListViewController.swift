@@ -18,9 +18,14 @@ class MovieListViewController: UIViewController {
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
     @IBOutlet weak var popularMoviesTableView: UITableView!
     var idMovie = 0
-
+    // 0 now, 1 popular
+    var observerClickSegue = 99
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        enum Section {
+            case nowPlaying, popular
+        }
         
         //Collection view delegate
         nowPlayingCollectionView.delegate = self
@@ -59,18 +64,35 @@ class MovieListViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailTableViewController{
-            destination.movieTitle = movieListPresenter.movieListDetails?.results[idMovie].title
-            destination.moviePosterURL = (movieListPresenter.movieListDetails?.results[idMovie].poster_path)!
-            var id = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0]
-            movieListPresenter.moviesListDetails_ID(id: id!)
-            var strGenres = ""
-            for m in movieListPresenter.movieListDetails_ID!.genres! {
-                strGenres = strGenres + m.name! + ","
-            }
-            destination.movieCategory = strGenres
-            destination.movieRating = movieListPresenter.movieListDetails?.results[idMovie].vote_average?.description
-            destination.movieDescription = movieListPresenter.movieListDetails?.results[idMovie].overview
+            
+            if observerClickSegue == 0 {
+                destination.movieTitle = movieListPresenter.movieList.moviesInList[idMovie].title
+                destination.moviePosterURL = (movieListPresenter.movieList.moviesInList[idMovie].poster_path)!
+                var id = movieListPresenter.movieList.moviesInList[idMovie].genre_ids?[0]
+                movieListPresenter.moviesListDetails_ID(id: id!)
+                var strGenres = ""
+                for m in movieListPresenter.movieListDetails_ID!.genres! {
+                    strGenres = strGenres + m.name! + ","
+                }
+                destination.movieCategory = strGenres
+                destination.movieRating = movieListPresenter.movieList.moviesInList[idMovie].vote_average?.description
+                destination.movieDescription = movieListPresenter.movieList.moviesInList[idMovie].overview
 
+            }else if observerClickSegue == 1 {
+                            destination.movieTitle = movieListPresenter.movieListDetails?.results[idMovie].title
+                            destination.moviePosterURL = (movieListPresenter.movieListDetails?.results[idMovie].poster_path)!
+                            var id = movieListPresenter.movieListDetails?.results[idMovie].genre_ids?[0]
+                            movieListPresenter.moviesListDetails_ID(id: id!)
+                            var strGenres = ""
+                            for m in movieListPresenter.movieListDetails_ID!.genres! {
+                                strGenres = strGenres + m.name! + ","
+                            }
+                            destination.movieCategory = strGenres
+                            destination.movieRating = movieListPresenter.movieListDetails?.results[idMovie].vote_average?.description
+                            destination.movieDescription = movieListPresenter.movieListDetails?.results[idMovie].overview
+                
+            }
+            
         }
         if let destination = segue.destination as? SearchTableViewController{
             destination.query = ""
@@ -96,6 +118,7 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       self.observerClickSegue = 1
         idMovie = indexPath.row
         performSegue(withIdentifier: "ToDetail", sender: self)
     }
@@ -104,8 +127,9 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource{
 extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.observerClickSegue = 0
         idMovie = indexPath.row
-        performSegue(withIdentifier: "ToDetail", sender: movieListPresenter.movieListDetails?.results[indexPath.row])
+        performSegue(withIdentifier: "ToDetail", sender: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -125,6 +149,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
             else {
                 fatalError()
         }
+        idMovie = indexPath.row
         cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
                        moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
         return cell
