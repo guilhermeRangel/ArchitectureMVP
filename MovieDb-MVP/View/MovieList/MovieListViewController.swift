@@ -12,14 +12,14 @@ class MovieListViewController: UIViewController {
     var movieListPresenter = MoviePresenter()
    
     
+    var searchController = UISearchController(searchResultsController: SearchViewController())
+    
     @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
     @IBOutlet weak var popularMoviesTableView: UITableView!
-    
-    @IBOutlet weak var searchBar: UISearchBar!
     var idMovie = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchBar.delegate = self
         
         //Collection view delegate
         nowPlayingCollectionView.delegate = self
@@ -28,8 +28,22 @@ class MovieListViewController: UIViewController {
         popularMoviesTableView.delegate = self
         popularMoviesTableView.dataSource = self
         popularMoviesTableView.rowHeight = 150
-    
-      
+
+        
+        //Set navbar
+        self.navigationController?.navigationItem.leftBarButtonItem
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
+        //Setting up search controller
+        self.searchController.searchResultsUpdater = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.placeholder = "Search Movie"
+        self.navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+//        movie = MovieModel(movieName: "Jumanji", moviePoster: "jumanji", movieRating: "5.0")
+//        movies = [movie, movie, movie] as? [MovieModel]
         
         movieListPresenter.popularMovies()
         movieListPresenter.moviesListDetails()
@@ -60,7 +74,7 @@ class MovieListViewController: UIViewController {
 
         }
         if let destination = segue.destination as? SearchTableViewController{
-            destination.query = searchBar.text ?? ""
+            destination.query = ""
         }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
@@ -107,7 +121,6 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
             else {
                 fatalError()
         }
- 
         cell.setUpCell(movieTitle: String(movieListPresenter.movieList.moviesInList[indexPath.row].title!),
                        moviePosterURL: String(movieListPresenter.movieList.moviesInList[indexPath.row].poster_path!), movieRating: String(movieListPresenter.movieList.moviesInList[indexPath.row].vote_average!))
         return cell
@@ -129,5 +142,22 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
 }
 
 extension MovieListViewController: UISearchBarDelegate{
+    
+}
+
+extension MovieListViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        
+        if searchController.searchBar.text?.count ?? 0 > 3{
+            let search = searchController.searchBar.text ?? ""
+            if let resultsController = searchController.searchResultsController as? SearchViewController{
+                let searchPresenter = resultsController.searchPresenter
+                searchPresenter.updateView(newQuery: search)
+            }
+        }
+        
+    }
+    
     
 }
