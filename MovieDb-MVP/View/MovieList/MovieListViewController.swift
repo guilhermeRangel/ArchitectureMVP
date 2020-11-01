@@ -150,7 +150,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
                 fatalError()
         }
         idMovie = indexPath.row
-        cell.setUpCell(movieTitle: String(movieList[indexPath.row].title!),
+        cell.setUpCell(movieTitle: String(movieList[indexPath.row].title ?? ""),
                        moviePosterURL: String(movieList[indexPath.row].poster_path!), movieRating: String(movieList[indexPath.row].vote_average!))
         return cell
     }
